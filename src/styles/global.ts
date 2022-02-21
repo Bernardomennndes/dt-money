@@ -36,8 +36,9 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        background: var(--background);
+        font-size: 1.6rem;
         -webkit-font-smoothing: antialiased;
+        background: var(--background);
     }
 
     body, input, textarea, button {

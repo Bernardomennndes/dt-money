@@ -19,8 +19,16 @@ export const Container = styled.div`
         }
 
         strong {
+            display: block;
             margin-top: 1.6rem;
             font-size: 3.2rem;
+            font-weight: 500;
+            line-height: 4.8rem;
+        }
+
+        &.highlight-background {
+            background: var(--green);
+            color: #fff;
         }
     }
 `
