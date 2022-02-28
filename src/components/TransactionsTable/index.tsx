@@ -1,13 +1,10 @@
-import { useEffect } from 'react';
-import { api } from '../../services/api';
 import { Container } from './styles'
+import { TransactionsContext } from '../../TransactionsContext';
+import { useContext } from 'react';
 
 export function TransactionsTable() {
 
-    useEffect(() => {
-        api.get('transactions')
-            .then( response => console.log(response.data) );
-    }, []);
+    const transactions = useContext(TransactionsContext);
 
     return (
         <>
@@ -23,19 +20,24 @@ export function TransactionsTable() {
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>Website development</td>
-                            <td className="deposit">$5,000</td>
-                            <td>Development</td>
-                            <td>20/02/2022</td>
-                        </tr>
 
-                        <tr>
-                            <td>Rent</td>
-                            <td className="withdraw">- $1,100</td>
-                            <td>House</td>
-                            <td>17/02/2022</td>
-                        </tr>
+                        {transactions.map(transaction =>
+                        (
+                            <tr key={transaction.id}>
+                                <td>{transaction.title}</td>
+                                <td className={transaction.type}>
+                                    {new Intl.NumberFormat('en-US', {
+                                        style: 'currency',
+                                        currency: 'USD'
+                                    }).format(transaction.amount)}
+                                </td>
+                                <td>{transaction.category}</td>
+                                <td>
+                                {new Intl.DateTimeFormat('en-US').format(new Date(transaction.createdAt))}    
+                                </td>
+                            </tr>
+                        )
+                        )}
 
                     </tbody>
                 </table>
