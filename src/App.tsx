@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Header } from "./components/Header";
 import { GlobalStyle } from "./styles/global";
 import { Dashboard } from "./components/Dashboard";
-import { TransactionsProvider } from './TransactionsContext';
+import { TransactionsProvider } from './hooks/useTransactions';
 import { NewTransactionModal } from './components/NewTransactionModal';
 
 Modal.setAppElement('#root');

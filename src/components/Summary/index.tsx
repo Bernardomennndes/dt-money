@@ -1,14 +1,29 @@
-import {useContext} from 'react'
 import totalImg from '../../assets/total.svg'
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
-import { TransactionsContext } from '../../TransactionsContext'
+import { useTransactions } from '../../hooks/useTransactions'
 
 import { Container } from "./styles"
 
 export function Summary() {
 
-    const data = useContext(TransactionsContext);
+    const { transactions } = useTransactions();
+
+    const summaryBalance = transactions.reduce((acc, transaction) => {
+        if (transaction.type === 'deposit') {
+            acc.deposit += transaction.amount;
+            acc.total += transaction.amount;
+        } else {
+            acc.withdraw += transaction.amount;
+            acc.total -= transaction.amount;
+        }
+        return acc;
+    }, {
+        deposit: 0,
+        withdraw: 0,
+        total: 0
+    })
+
 
     return (
         <>
@@ -18,7 +33,7 @@ export function Summary() {
                         <p>Entries</p>
                         <img src={incomeImg} alt="Income"/>
                     </header>
-                    <strong>$1000.00</strong>
+                    <strong>{new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(summaryBalance.deposit)}</strong>
                 </div>
 
                 <div>
@@ -26,7 +41,7 @@ export function Summary() {
                         <p>Withdrawals</p>
                         <img src={outcomeImg} alt="Outcome"/>
                     </header>
-                    <strong>- $500.00</strong>
+                    <strong>-{new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(summaryBalance.withdraw)}</strong>
                 </div>
 
                 <div className="highlight-background">
@@ -34,7 +49,7 @@ export function Summary() {
                         <p>Summary</p>
                         <img src={totalImg} alt="Entries"/>
                     </header>
-                    <strong>$500.00</strong>
+                    <strong>{new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(summaryBalance.total)}</strong>
                 </div>
             </Container>
         </>
